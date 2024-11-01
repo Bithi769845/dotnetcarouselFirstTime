@@ -1,0 +1,92 @@
+﻿@model IEnumerable<carousel.Models.CarouselItem>
+
+<style>
+    .carousel-container {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 50px 0;
+    }
+
+    .carousel div {
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+
+    .carousel p {
+        margin: 0;
+        font-size: 1 rem;
+    }
+
+    .slick-prev, .slick-next {
+        background-image: linear-gradient(145deg, #e2e8ec, #ffffff);
+        box-shadow: 5px 5px 15px #D1D9E6, -5px -5px 15px #ffffff;
+        border-radius: 20px;
+        padding: 10px 30px 30px 10px;
+        font-weight: bold;
+        border: none;
+        outline: none;
+        z-index: 1;
+    }
+
+        .slick-prev:hover, .slick-next:hover {
+            background-color: #ff014f;
+        }
+
+    .slick-slide {
+        margin: 0 10px; /* Space between slides */
+    }
+</style>
+
+<div class="carousel-container">
+    <div class="carousel">
+        @foreach (var item in Model)
+        {
+            <div style="background-image: linear-gradient(145deg, #e2e8ec, #ffffff); border-radius: 10px; box-shadow: 5px 5px 15px #D1D9E6, -5px -5px 15px #ffffff; padding: 20px; margin: 10px;">
+                <p style="color:#ff014f;"><strong>Danger Zone:</strong> @item.DangerZoneName</p>
+                <p style="color:#ff014f;"><strong>Number of People:</strong> @item.NumberOfPeople</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.carousel').slick({
+                dots: false,
+                infinite: true,
+                speed: 800,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 3000,
+                easing: 'ease',
+                cssEase: 'cubic-bezier(0.25, 1, 0.5, 1)',
+                prevArrow: '<button type="button" class="slick-prev">Previous</button>',
+                nextArrow: '<button type="button" class="slick-next">Next</button>',
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 3,
+                        }
+                    },
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            slidesToShow: 2,
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}
