@@ -19,8 +19,7 @@
         font-size: 1 rem;
     }
 
-    .slick-prev, .slick-next {
-        background-image: linear-gradient(145deg, #e2e8ec, #ffffff);
+    .slick-prev, .slick-next {        
         box-shadow: 5px 5px 15px #D1D9E6, -5px -5px 15px #ffffff;
         border-radius: 20px;
         padding: 10px 30px 30px 10px;
@@ -30,10 +29,7 @@
         z-index: 1;
     }
 
-        .slick-prev:hover, .slick-next:hover {
-            background-color: #ff014f;
-        }
-
+       
     .slick-slide {
         margin: 0 10px; /* Space between slides */
     }
@@ -54,16 +50,14 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
+            // Initialize the carousel
             $('.carousel').slick({
                 dots: false,
-                infinite: true,
+                infinite: false, // Disable infinite scrolling
                 speed: 800,
                 slidesToShow: 4,
                 slidesToScroll: 1,
-                autoplay: true,
-                autoplaySpeed: 3000,
-                easing: 'ease',
-                cssEase: 'cubic-bezier(0.25, 1, 0.5, 1)',
+                autoplay: false, // Stop auto-slide
                 prevArrow: '<button type="button" class="slick-prev">Previous</button>',
                 nextArrow: '<button type="button" class="slick-next">Next</button>',
                 responsive: [
@@ -87,6 +81,44 @@
                     }
                 ]
             });
+
+            function updateButtonStates(slick) {
+                const currentSlide = slick.slickCurrentSlide();
+                const totalSlides = slick.slideCount;
+                const slidesToShow = slick.options.slidesToShow;
+
+                // Determine if there are previous or next slides available
+                const hasPrevSlides = currentSlide > 0;
+                const hasNextSlides = currentSlide < (totalSlides - slidesToShow);
+
+                // Get the buttons
+                const $prevButton = $('.slick-prev');
+                const $nextButton = $('.slick-next');
+
+                // Update button states automatically based on slides available
+                $prevButton.prop('disabled', !hasPrevSlides).css('background-color', hasPrevSlides ? '#ff014f' : '#ccc');
+                $nextButton.prop('disabled', !hasNextSlides).css('background-color', hasNextSlides ? '#ff014f' : '#ccc');
+            }
+
+            // Update button states on slide change and initialization
+            $('.carousel').on('init', function (event, slick) {
+                updateButtonStates(slick); // Set initial button states
+            });
+
+            $('.carousel').on('afterChange', function (event, slick, currentSlide) {
+                updateButtonStates(slick); // Update states after slide change
+            });
+
+            // Initial button state setup after carousel is initialized
+            updateButtonStates($('.carousel').slick('getSlick'));
         });
     </script>
 }
+
+
+
+
+
+
+
+
